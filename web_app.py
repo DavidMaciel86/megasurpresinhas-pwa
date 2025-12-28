@@ -221,7 +221,44 @@ HTML = """
     font-size: 13px;
     opacity: 0.85;
   }
-  </style>
+
+  /* ===== Histórico recolhível ===== */
+  details.collapsible{
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--box-bg);
+    padding: 10px 12px;
+  }
+
+  details.collapsible > summary{
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 800;
+    user-select: none;
+  }
+
+  details.collapsible > summary::-webkit-details-marker{
+    display:none;
+  }
+
+  details.collapsible > summary::after{
+    content: "▴";
+    font-size: 14px;
+    opacity: 0.9;
+    margin-left: 10px;
+  }
+
+  details.collapsible[open] > summary::after{
+    content: "▾";
+  }
+
+  .collapsible-body{
+    margin-top: 10px;
+  }
+</style>
 
 </head>
 <body>
@@ -247,12 +284,22 @@ HTML = """
   <div class="box">
     <form method="post" action="{{ form_action or url_for('gerar') }}">
       <div class="row">
+        {% if not ocultar_surpresinhas %}
+  <label>Qtd. surpresinhas ({{ range_min_surpresinhas or 1 }}–{{ range_max_surpresinhas or 12 }})
+    <input type="number"
+           name="qtd_surpresinhas"
+           min="{{ range_min_surpresinhas or 1 }}"
+           max="{{ range_max_surpresinhas or 12 }}"
+           value="{{ qtd_surpresinhas }}">
+  </label>
+{% else %}
+  <!-- Lotofácil: 1 surpresinha por clique (campo oculto para evitar confusão) -->
+  <input type="hidden" name="qtd_surpresinhas" value="1">
+{% endif %}
 
-        <label>Qtd. surpresinhas (1–12)
-          <input type="number" name="qtd_surpresinhas" min="1" max="12" value="{{ qtd_surpresinhas }}">
-        </label>
 
-        <label>Qtd. dezenas (6–12)
+        <label>Qtd. dezenas ({{ range_min_dezenas or 6 }}–{{ range_max_dezenas or 12 }})
+
           <input type="number" name="qtd_dezenas"
                  min="{{ range_min_dezenas or 6 }}"
                  max="{{ range_max_dezenas or 12 }}"
@@ -297,9 +344,22 @@ HTML = """
 
       <div class="resultado-lista">
         {% for jogo in resultado %}
-          <div class="linha-jogo">
-            {{ loop.index }}) {% for n in jogo %}{{ "%02d"|format(n) }}{% if not loop.last %} - {% endif %}{% endfor %}
-          </div>
+
+          {% if (jogo_nome or 'mega') == 'lotofacil' %}
+            <div style="margin-top:6px;">
+              <b>{{ loop.index }})</b>
+              <div class="lotofacil-grid">
+                {% for n in jogo %}
+                  <div class="lotofacil-num">{{ "%02d"|format(n) }}</div>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            <div class="linha-jogo">
+              {{ loop.index }}) {% for n in jogo %}
+              {{ "%02d"|format(n) }}{% if not loop.last %} - {% endif %}{% endfor %}
+            </div>
+          {% endif %}
 
           {% if loop.index % 3 == 0 and not loop.last %}
             <div class="quebra-grupo"></div>
@@ -311,23 +371,26 @@ HTML = """
     </div>
   {% endif %}
 
-  <div class="box">
-    <b>Histórico neste dispositivo:</b>
 
-    <div id="historico-local" data-jogo="{{ jogo_nome or 'mega' }}" style="margin-top: 8px;"></div>
+  <details class="collapsible">
+    <summary>Histórico neste dispositivo</summary>
 
-    <button
-      type="button"
-      style="margin-top: 10px;"
-      onclick="handleLimparHistorico()"
-    >
-      Limpar histórico
-    </button>
+    <div class="collapsible-body">
+      <div id="historico-local" data-jogo="{{ jogo_nome or 'mega' }}" style="margin-top: 8px;"></div>
 
-    <div class="small" style="margin-top: 6px;">
-      O histórico é salvo apenas neste dispositivo.
+      <button
+        type="button"
+        style="margin-top: 10px;"
+        onclick="handleLimparHistorico()"
+      >
+        Limpar histórico
+      </button>
+
+      <div class="small" style="margin-top: 6px;">
+        O histórico é salvo apenas neste dispositivo.
+      </div>
     </div>
-  </div>
+  </details>
 
   <script src="/static/js/app.js"></script>
 
@@ -404,7 +467,7 @@ def lotofacil_index():
     return render_template_string(
         HTML,
         # defaults da Lotofácil
-        qtd_surpresinhas=3,  # quantidade de jogos
+        qtd_surpresinhas=1,  # Lotofácil: 1 jogo por clique
         qtd_dezenas=15,  # Lotofácil: 15–20
         pasta_historico=pasta,
         resultado=None,
@@ -419,20 +482,24 @@ def lotofacil_index():
         jogo_nome="lotofacil",
         form_action=url_for("lotofacil_gerar"),
         titulo="MegaSurpresinhas Lotofácil",
+        range_min_surpresinhas=1,
+        range_max_surpresinhas=1,
         range_min_dezenas=15,
         range_max_dezenas=20,
+        ocultar_surpresinhas=True,
     )
 
 
 @app.post("/lotofacil/gerar")
 def lotofacil_gerar():
-    qtd_surpresinhas = _parse_int(request.form.get("qtd_surpresinhas", "3"), 3)
+    # Lotofácil: sempre 1 surpresinha por clique para evitar confusão ao copiar
+    qtd_surpresinhas = 1
     qtd_dezenas = _parse_int(request.form.get("qtd_dezenas", "15"), 15)
 
     # validações específicas Lotofácil
-    if not (1 <= qtd_surpresinhas <= 12):
+    if qtd_surpresinhas != 1:
         return _render_erro_lotofacil(
-            "Qtd. de surpresinhas deve ser entre 1 e 12.",
+            "Na Lotofácil, é permitido gerar apenas 1 surpresinha por vez.",
             qtd_surpresinhas,
             qtd_dezenas,
         )
@@ -498,8 +565,11 @@ def lotofacil_gerar():
         jogo_nome="lotofacil",
         form_action=url_for("lotofacil_gerar"),
         titulo="MegaSurpresinhas Lotofácil",
+        range_min_surpresinhas=1,
+        range_max_surpresinhas=1,
         range_min_dezenas=15,
         range_max_dezenas=20,
+        ocultar_surpresinhas=True,
     )
 
 
@@ -523,8 +593,11 @@ def _render_erro_lotofacil(msg: str, qtd_surpresinhas: int, qtd_dezenas: int):
         jogo_nome="lotofacil",
         form_action=url_for("lotofacil_gerar"),
         titulo="MegaSurpresinhas Lotofácil",
+        range_min_surpresinhas=1,
+        range_max_surpresinhas=1,
         range_min_dezenas=15,
         range_max_dezenas=20,
+        ocultar_surpresinhas=True,
     )
 
 
