@@ -258,7 +258,69 @@ HTML = """
   .collapsible-body{
     margin-top: 10px;
   }
-</style>
+
+  .creditos{
+    text-align: center;
+    margin-top: 20px;
+    padding: 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .apoio-msg{
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .pix-box{
+    margin-top: 10px;
+  }
+
+  .pix-label{
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  .pix-qrcode{
+    width: 140px;
+    height: 140px;
+    border-radius: 8px;
+    background: #fff;
+    padding: 6px;
+  }
+
+  .pix-copia-cola{
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .pix-copia-cola input{
+    width: min(440px, 92vw);
+    font-size: 11px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--pre-bg);
+    color: var(--text);
+  }
+
+  .pix-copia-cola button{
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--btn-border);
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    cursor: pointer;
+  }
+
+
+  </style>
 
 </head>
 <body>
@@ -424,7 +486,69 @@ HTML = """
   </script>
 
   <footer class="creditos">
-    By David Maciel
+    <div>By David Maciel</div>
+
+    <div class="apoio-msg">
+      Este é um app gratuito.<br>
+      Se ele te ajudou e você for premiado(a),<br>
+      considere apoiar o desenvolvimento
+      com uma contribuição voluntária 💚
+    </div>
+
+    <div class="pix-box">
+      <div class="pix-label">Pix (valor livre)</div>
+      <img
+        src="/static/img/pix-qrcode.png"
+        alt="QR Code Pix contribuição"
+        class="pix-qrcode"
+      >
+    </div>
+
+    <div class="pix-copia-cola">
+      <input
+        type="text"
+        id="pix-copia-cola"
+        readonly
+        value="00020126580014br.gov.bcb.pix01360f089986-7386-4297-a30c-d2df373d3e3a5204000053039865802BR5923David Do Rosario Maciel6009Sao Paulo62290525REC6950D6D5EFFB45179401606304256C"
+        aria-label="Pix copia e cola"
+      >
+      <button type="button" onclick="copiarPix()">Copiar Pix</button>
+    </div>
+
+    <div class="small" style="margin-top:8px;">
+      Dica: no app do seu banco, escolha <b>Pix Copia e Cola</b> e cole o código.
+    </div>
+
+  <script>
+    function copiarPix() {
+      const input = document.getElementById("pix-copia-cola");
+      if (!input) return;
+
+      const text = input.value || "";
+
+      // Tenta Clipboard API (moderna). Se não der, cai no método antigo.
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => alert("Pix copiado! Agora é só colar no app do seu banco 😊"))
+          .catch(() => {
+            input.focus();
+            input.select();
+            input.setSelectionRange(0, 999999);
+            document.execCommand("copy");
+            alert("Pix copiado! Agora é só colar no app do seu banco 😊");
+          });
+        return;
+      }
+
+      input.focus();
+      input.select();
+      input.setSelectionRange(0, 999999); // mobile
+      document.execCommand("copy");
+      alert("Pix copiado! Agora é só colar no app do seu banco 😊");
+    }
+  </script>
+
+
   </footer>
 </body>
 </html>
