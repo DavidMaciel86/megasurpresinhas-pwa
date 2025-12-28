@@ -491,7 +491,7 @@ HTML = """
     <div class="apoio-msg">
       Este é um app gratuito.<br>
       Se ele te ajudou e você for premiado(a),<br>
-      considere apoiar o desenvolvimento
+      considere apoiar o desenvolvedor
       com uma contribuição voluntária 💚
     </div>
 
