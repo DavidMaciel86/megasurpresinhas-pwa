@@ -1,14 +1,55 @@
-# MegaSurpresinhas
+# 🎲 MegaSurpresinhas
 
-PWA desenvolvido em Python (Flask) para geração de apostas da Mega-Sena, com estratégia resiliente de obtenção de dados, incluindo API alternativa, cache local e modo offline/estatístico. Funciona em Web, Android, iOS e Desktop.
+Aplicação web progressiva (PWA) para geração de **surpresinhas** de loterias, desenvolvida com foco em **qualidade de código**, **boas práticas** e **experiência do usuário**.
 
-## Técnologias
-- Python 3
-- Flask
-- PWA (Service Worker + Manifest)
-- GitHub / Render
+O projeto é mantido como **produto em evolução**, ao mesmo tempo em que serve como **portfólio técnico**, demonstrando arquitetura, organização e domínio de tecnologias web modernas.
 
-## Modos de operação
-- Online (API alternativa)
-- Cache local
-- Offline / estatístico
+🔗 **Aplicação em produção:**  
+👉 https://megasena-multios.onrender.com
+
+---
+
+##  Funcionalidades
+
+-  Geração de surpresinhas da **Mega-Sena**
+-  Geração de surpresinhas da **Lotofácil**
+-  **PWA instalável** (Android, iOS e Desktop)
+-  Funciona mesmo com conexão instável
+-  Histórico local de jogos gerados
+-  Interface simples, rápida e responsiva
+-  Sem coleta de dados pessoais
+
+---
+
+## Arquitetura do Projeto
+
+Este repositório representa a **versão pública/demonstrativa** do projeto.
+
+> ⚠️ A lógica completa de geração de números e regras internas faz parte do **core privado** da aplicação, utilizado em produção.
+
+Nesta versão pública:
+- A estrutura real do projeto é preservada
+- O foco está em:
+  - organização
+  - arquitetura
+  - PWA
+  - integração frontend/backend
+- Partes sensíveis da lógica foram **abstraídas ou simplificadas**, prática comum em projetos de portfólio
+
+---
+
+## Tecnologias Utilizadas
+
+- **Python 3**
+- **Flask**
+- **HTML5 / CSS3 / JavaScript**
+- **Service Workers**
+- **Web App Manifest**
+- **LocalStorage**
+- **Git & GitHub**
+- **Deploy em nuvem (Render)**
+
+---
+
+## Estrutura Geral
+

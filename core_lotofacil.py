@@ -79,11 +79,11 @@ def obter_concurso_alt(numero_concurso: int) -> dict:
     return resp.json()
 
 
-def coletar_ultimos_5_resultados_alt() -> List[int]:
+def coletar_ultimos_3_resultados_alt() -> List[int]:
     ultimo = obter_ultimo_concurso_alt()
     pool: List[int] = []
 
-    for concurso in range(ultimo, ultimo - 5, -1):
+    for concurso in range(ultimo, ultimo - 3, -1):
         dados = obter_concurso_alt(concurso)
         dezenas = dados.get("listaDezenas") or []
         if dezenas:
@@ -109,14 +109,14 @@ def preparar_pool_lotofacil_com_status() -> Tuple[List[int], str, str, str]:
 
     # 1️⃣ Online (API alternativa)
     try:
-        pool = coletar_ultimos_5_resultados_alt()
+        pool = coletar_ultimos_3_resultados_alt()
         pool.extend(range(1, 26))
 
         _salvar_cache(
             {
                 "fonte": "api_alt",
                 "ultimo_concurso": obter_ultimo_concurso_alt(),
-                "pool_ultimos_5": pool[:-25],
+                "pool_ultimos_3": pool[:-25],
             }
         )
 
@@ -134,8 +134,8 @@ def preparar_pool_lotofacil_com_status() -> Tuple[List[int], str, str, str]:
 
     # 2️⃣ Cache local
     cache = _ler_cache()
-    if cache and cache.get("pool_ultimos_5"):
-        pool_cache = [int(x) for x in cache["pool_ultimos_5"]]
+    if cache and cache.get("pool_ultimos_3"):
+        pool_cache = [int(x) for x in cache["pool_ultimos_3"]]
         pool_cache.extend(range(1, 26))
 
         return (
