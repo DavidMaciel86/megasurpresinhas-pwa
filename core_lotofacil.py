@@ -112,11 +112,14 @@ def preparar_pool_lotofacil_com_status() -> Tuple[List[int], str, str, str]:
         pool = coletar_ultimos_3_resultados_alt()
         pool.extend(range(1, 26))
 
+        # Ordena a pool aqui
+        pool.sort()
+
         _salvar_cache(
             {
                 "fonte": "api_alt",
                 "ultimo_concurso": obter_ultimo_concurso_alt(),
-                "pool_ultimos_3": pool[:-25],
+                "pool_ultimos_3": pool[:-25],  # mantém só as dezenas dos resultados
             }
         )
 
@@ -138,6 +141,9 @@ def preparar_pool_lotofacil_com_status() -> Tuple[List[int], str, str, str]:
         pool_cache = [int(x) for x in cache["pool_ultimos_3"]]
         pool_cache.extend(range(1, 26))
 
+        # Ordena a pool do cache
+        pool_cache.sort()
+
         return (
             pool_cache,
             "cache",
@@ -146,8 +152,13 @@ def preparar_pool_lotofacil_com_status() -> Tuple[List[int], str, str, str]:
         )
 
     # 3️⃣ Offline / estatístico
+    pool_offline = list(range(1, 26))
+
+    # Já vem ordenada, mas deixei por consistência
+    pool_offline.sort()
+
     return (
-        list(range(1, 26)),
+        pool_offline,
         "offline",
         "estatistico",
         "Modo offline: gerador estatístico (1–25).",
