@@ -9,7 +9,7 @@ from typing import List, Optional, Tuple
 
 import requests
 
-# ✅ API alternativa (formato compatível com a lógica inicial)
+# API alternativa (formato compatível com a lógica inicial)
 # Ex.: https://api.guidi.dev.br/loteria/megasena/ultimo  :contentReference[oaicite:1]{index=1}
 API_ALT_BASE = "https://api.guidi.dev.br/loteria/megasena"
 API_ALT_ULTIMO = f"{API_ALT_BASE}/ultimo"

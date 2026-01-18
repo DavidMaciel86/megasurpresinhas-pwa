@@ -107,7 +107,7 @@ def preparar_pool_lotofacil_com_status() -> Tuple[List[int], str, str, str]:
     fonte: api_alt | cache | estatistico
     """
 
-    # 1️⃣ Online (API alternativa)
+    # 1 Online (API alternativa)
     try:
         pool = coletar_ultimos_3_resultados_alt()
         pool.extend(range(1, 26))
@@ -135,7 +135,7 @@ def preparar_pool_lotofacil_com_status() -> Tuple[List[int], str, str, str]:
     except Exception:
         pass
 
-    # 2️⃣ Cache local
+    # 2 Cache local
     cache = _ler_cache()
     if cache and cache.get("pool_ultimos_3"):
         pool_cache = [int(x) for x in cache["pool_ultimos_3"]]
@@ -151,7 +151,7 @@ def preparar_pool_lotofacil_com_status() -> Tuple[List[int], str, str, str]:
             "Sem conexão. Usando dados salvos localmente (cache da Lotofácil).",
         )
 
-    # 3️⃣ Offline / estatístico
+    # 3 Offline / estatístico
     pool_offline = list(range(1, 26))
 
     # Já vem ordenada, mas deixei por consistência
