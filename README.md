@@ -1,55 +1,51 @@
-# 🎲 MegaSurpresinhas
+🎲 MegaSurpresinhas
 
-Aplicação web progressiva (PWA) para geração de **surpresinhas** de loterias, desenvolvida com foco em **qualidade de código**, **boas práticas** e **experiência do usuário**.
+Aplicação web progressiva (PWA) para geração de surpresinhas de
+loterias, desenvolvida com foco em qualidade de código, boas práticas e
+experiência do usuário.
 
-O projeto é mantido como **produto em evolução**, ao mesmo tempo em que serve como **portfólio técnico**, demonstrando arquitetura, organização e domínio de tecnologias web modernas.
+🔗 Aplicação em produção: https://megasurpresinhas.onrender.com
 
-🔗 **Aplicação em produção:**  
-👉 https://megasena-multios.onrender.com
+------------------------------------------------------------------------
 
----
+🚀 Funcionalidades
 
-##  Funcionalidades
+-   Geração de jogos da Mega-Sena
+-   Geração de jogos da Lotofácil
+-   PWA instalável (Android, iOS e Desktop)
+-   Funciona offline (cache inteligente)
+-   Histórico local de jogos
+-   Interface responsiva
 
--  Geração de surpresinhas da **Mega-Sena**
--  Geração de surpresinhas da **Lotofácil**
--  **PWA instalável** (Android, iOS e Desktop)
--  Funciona mesmo com conexão instável
--  Histórico local de jogos gerados
--  Interface simples, rápida e responsiva
--  Sem coleta de dados pessoais
+------------------------------------------------------------------------
 
----
+💡 Destaque técnico
 
-## Arquitetura do Projeto
+-   Arquitetura modular (core, web, storage)
+-   Sistema resiliente (online → cache → offline)
+-   Integração com APIs externas
+-   Service Worker com cache inteligente
 
-Este repositório representa a **versão pública/demonstrativa** do projeto.
+------------------------------------------------------------------------
 
-> ⚠️ A lógica completa de geração de números e regras internas faz parte do **core privado** da aplicação, utilizado em produção.
+🛠 Tecnologias
 
-Nesta versão pública:
-- A estrutura real do projeto é preservada
-- O foco está em:
-  - organização
-  - arquitetura
-  - PWA
-  - integração frontend/backend
-- Partes sensíveis da lógica foram **abstraídas ou simplificadas**, prática comum em projetos de portfólio
+-   Python
+-   Flask
+-   HTML, CSS, JavaScript
+-   PWA (Service Worker + Manifest)
+-   Git e GitHub
+-   Deploy em nuvem (Render)
 
----
+------------------------------------------------------------------------
 
-## Tecnologias Utilizadas
+▶️ Como executar localmente
 
-- **Python 3**
-- **Flask**
-- **HTML5 / CSS3 / JavaScript**
-- **Service Workers**
-- **Web App Manifest**
-- **LocalStorage**
-- **Git & GitHub**
-- **Deploy em nuvem (Render)**
+pip install -r requirements.txt python web_app.py
 
----
+------------------------------------------------------------------------
 
-## Estrutura Geral
+🌐 Deploy
+
+Aplicação hospedada no Render.com (plano gratuito).
 
